@@ -1,0 +1,13 @@
+sudo: required
+dist: precise
+language: node_js
+node_js:
+- 6.10.0
+cache:
+  directories:
+  - node_modules
+before_install:
+- npm prune
+- sleep 5
+install:
+- npm install

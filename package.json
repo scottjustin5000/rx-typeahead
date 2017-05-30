@@ -1,0 +1,27 @@
+{
+  "name": "react-typeahead",
+  "description": "react typeahead component",
+  "version": "1.0.0",
+  "author": "scottjustin5000",
+  "main": "index.js",
+  "engines": {
+    "node": "6.10",
+    "npm": "3.8.6"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/scottjustin5000/react-typeahead"
+  },
+  "scripts": {
+    "test": "standard"
+  },
+  "devDependencies": {
+    "standard": "10.0.1"
+  },
+  "dependencies": {
+    "prop-types": "^15.5.0",
+    "radium": "^0.19.1",
+    "react": "^15.3.0",
+    "react-dom": "^15.3.0"
+  }
+}
