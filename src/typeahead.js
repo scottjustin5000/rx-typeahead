@@ -14,6 +14,7 @@ class Typeahead extends Component {
     }
 
     this.onFocus = this.onFocus.bind(this)
+    this.onBlur = this.onBlur.bind(this)
     this.onChange = this.onChange.bind(this)
     this.onKeyDown = this.onKeyDown.bind(this)
     this.onClick = this.onClick.bind(this)
@@ -88,7 +89,7 @@ class Typeahead extends Component {
       selectedIndex: null
     }, () => {
       this.props.onSelect(value, selected)
-      this.input.focus()
+      // this.input.focus()
     })
   }
 
@@ -143,6 +144,10 @@ class Typeahead extends Component {
 
   onHover (index) {
     this.setState({ selectedIndex: index })
+  }
+
+  onBlur (e) {
+   // this.setState({ isOpen: false })
   }
 
   onFocus (e) {
@@ -217,6 +222,7 @@ class Typeahead extends Component {
           aria-autocomplete='list'
           autoComplete='on'
           ref={(input) => { this.input = input }}
+          onBlur={this.onBlur}
           onFocus={this.onFocus}
           onChange={this.onChange}
           onKeyDown={this.onKeyDown}
@@ -236,8 +242,7 @@ Typeahead.propTypes = {
   itemMatches: PropTypes.func,
   sortResults: PropTypes.func,
   getSelectedValue: PropTypes.func,
-  inputProps: PropTypes.object,
-  open: PropTypes.bool
+  inputProps: PropTypes.object
 }
 
 Typeahead.defaultProps = {
