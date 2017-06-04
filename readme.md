@@ -4,3 +4,5 @@
 
 # React Typeahead
 Simple typeahead component for react
+
+[example](https://codepen.io/scottjustin5000/full/mmYPGg/)

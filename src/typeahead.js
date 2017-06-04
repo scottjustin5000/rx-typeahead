@@ -17,13 +17,14 @@ class Typeahead extends Component {
     this.onBlur = this.onBlur.bind(this)
     this.onChange = this.onChange.bind(this)
     this.onKeyDown = this.onKeyDown.bind(this)
-    this.onClick = this.onClick.bind(this)
     this.arrowDown = this.arrowDown.bind(this)
     this.arrowUp = this.arrowUp.bind(this)
+    this.onEnter = this.onEnter.bind(this)
 
     this.keyEvents = {
       'ArrowUp': this.arrowUp,
-      'ArrowDown': this.arrowDown
+      'ArrowDown': this.arrowDown,
+      'Enter': this.onEnter
     }
 
     this.styles = {
@@ -83,23 +84,22 @@ class Typeahead extends Component {
   }
 
   setSelected (selected) {
-    const value = this.props.getSelectedValue(selected)
+    const value = this.props.setDisplay(selected)
     this.setState({
       isOpen: false,
       selectedIndex: null
     }, () => {
       this.props.onSelect(value, selected)
-      // this.input.focus()
     })
   }
 
   filter () {
     let items = this.props.items.filter((item) => (
-      this.props.itemMatches(item, this.props.selectedValue)
+      this.props.itemMatches(item, this.props.displayValue)
     ))
 
     items.sort((a, b) => (
-        this.props.sortResults(a, b, this.props.selectedValue)
+        this.props.sortResults(a, b, this.props.displayValue)
       ))
 
     return items
@@ -142,12 +142,29 @@ class Typeahead extends Component {
     })
   }
 
+  onEnter (event) {
+    if (!this.state.isOpen) return
+    if (this.state.selectedIndex == null) {
+      this.setState({ isOpen: false })
+    } else {
+      event.preventDefault()
+      let item = this.filter()[this.state.selectedIndex]
+      let value = this.props.setDisplay(item)
+      this.setState({
+        isOpen: false,
+        highlightedIndex: null
+      }, () => {
+        this.props.onSelect(value, item)
+      })
+    }
+  }
+
   onHover (index) {
     this.setState({ selectedIndex: index })
   }
 
   onBlur (e) {
-   // this.setState({ isOpen: false })
+    // this.setState({ isOpen: false })
   }
 
   onFocus (e) {
@@ -163,17 +180,6 @@ class Typeahead extends Component {
       return this.keyEvents[e.key](e)
     }
     this.setState({ selectedIndex: null, isOpen: true })
-  }
-
-  onClick (event) {
-    if (!this.state.isOpen) {
-      this.setState({ isOpen: true })
-    } else if (this.state.selectedIndex !== null) {
-      const items = this.filter()
-      const selected = items[this.state.selectedIndex]
-      this.setSelected(selected)
-    }
-    this.ignoreClick = false
   }
 
   onSelected (event) {
@@ -218,7 +224,7 @@ class Typeahead extends Component {
         <input style={this.styles.input}
           type='text'
           role='combobox'
-          placeholder='search...'
+          placeholder={this.props.placeholder},
           aria-autocomplete='list'
           autoComplete='on'
           ref={(input) => { this.input = input }}
@@ -226,7 +232,7 @@ class Typeahead extends Component {
           onFocus={this.onFocus}
           onChange={this.onChange}
           onKeyDown={this.onKeyDown}
-          value={this.props.selectedValue}
+          value={this.props.displayValue}
           />
         { this.state.isOpen && this.renderList() }
       </div>
@@ -236,21 +242,24 @@ class Typeahead extends Component {
 
 Typeahead.propTypes = {
   items: PropTypes.array.isRequired,
-  selectedValue: PropTypes.any,
+  placeholder: PropTypes.string,
+  displayValue: PropTypes.string,
   onChange: PropTypes.func,
   onSelect: PropTypes.func,
   itemMatches: PropTypes.func,
   sortResults: PropTypes.func,
-  getSelectedValue: PropTypes.func,
+  setDisplay: PropTypes.func,
+  setDisplay: PropTypes.func,
   inputProps: PropTypes.object
 }
 
 Typeahead.defaultProps = {
-  selectedValue: '',
+  displayValue: '',
+  placeholder: 'search...',
   inputProps: {},
   onChange () {},
   onSelected () {},
-  getSelectedValue (item) { return item.id },
+  setDisplay (item) { return item ? item.label : '' },
   itemMatches (data, value) {
     return (
       data.label.toLowerCase().indexOf(value.toLowerCase()) !== -1 ||

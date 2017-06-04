@@ -13,15 +13,17 @@
     "url": "https://github.com/scottjustin5000/react-typeahead"
   },
   "scripts": {
+    "start": "webpack-dev-server",
+    "build": "webpack -p",
     "test": "standard"
   },
   "devDependencies": {
     "standard": "10.0.1"
   },
   "dependencies": {
-    "prop-types": "^15.5.0",
-    "radium": "^0.19.1",
-    "react": "^15.3.0",
-    "react-dom": "^15.3.0"
+    "prop-types": "^15.5.8",
+    "react": "^15.5.0",
+    "react-dom": "^15.5.0",
+    "radium": "^0.19.1"
   }
 }
