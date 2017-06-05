@@ -249,7 +249,6 @@ Typeahead.propTypes = {
   itemMatches: PropTypes.func,
   sortResults: PropTypes.func,
   setDisplay: PropTypes.func,
-  setDisplay: PropTypes.func,
   inputProps: PropTypes.object
 }
 
