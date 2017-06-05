@@ -224,7 +224,7 @@ class Typeahead extends Component {
         <input style={this.styles.input}
           type='text'
           role='combobox'
-          placeholder={this.props.placeholder},
+          placeholder={this.props.placeholder}
           aria-autocomplete='list'
           autoComplete='on'
           ref={(input) => { this.input = input }}
